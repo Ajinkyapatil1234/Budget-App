@@ -2,8 +2,6 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: budget-app-run
-  annotations:
-    pipeline.tekton.dev/serviceAccount: dockerhub-serviceaccount  # Correct way to define the service account
 spec:
   pipelineRef:
     name: budget-app-pipeline
@@ -16,9 +14,6 @@ spec:
       value: https://github.com/Ajinkyapatil1234/Budget-App.git
     - name: image-url
       value: docker.io/ajinkyadoc1234/budget-app:latest
-    - name: DOCKERFILE
-      value: Dockerfile
-    - name: CONTEXT
-      value: .
-    - name: EXTRA_ARGS
-      value: ""
+  taskRunSpecs:
+    - pipelineTaskName: kaniko-build
+      taskServiceAccountName: dockerhub-serviceaccount
