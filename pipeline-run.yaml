@@ -3,9 +3,11 @@ kind: PipelineRun
 metadata:
   name: budget-app-run
 spec:
-  serviceAccountName: dockerhub-serviceaccount  # <-- required to authenticate Docker Hub
   pipelineRef:
     name: budget-app-pipeline
+  taskRunSpecs:
+    - pipelineTaskName: build-and-push
+      serviceAccountName: dockerhub-serviceaccount
   workspaces:
     - name: shared-data
       persistentVolumeClaim:
