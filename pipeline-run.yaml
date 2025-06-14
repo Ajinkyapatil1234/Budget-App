@@ -6,7 +6,7 @@ spec:
   pipelineRef:
     name: budget-app-pipeline
   taskRunSpecs:
-    - pipelineTaskName: build-and-push
+    - pipelineTaskName: kaniko-build 
       serviceAccountName: dockerhub-serviceaccount
   workspaces:
     - name: shared-data
