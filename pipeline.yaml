@@ -1,42 +1,38 @@
 apiVersion: tekton.dev/v1
-kind: Pipeline
+kind: Task
 metadata:
-  name: budget-app-pipeline
+  name: kaniko
 spec:
-  workspaces:
-    - name: shared-data
   params:
-    - name: repo-url
+    - name: IMAGE
       type: string
-    - name: image-url
+    - name: DOCKERFILE
       type: string
-  tasks:
-    - name: clone
-      taskRef:
-        name: git-clone
-      workspaces:
-        - name: output
-          workspace: shared-data
-      params:
-        - name: url
-          value: $(params.repo-url)
-        - name: deleteExisting
-          value: "true"
-
-    - name: kaniko-build
-      runAfter: [clone]
-      taskRef:
-        name: kaniko
-      workspaces:
-        - name: source
-          workspace: shared-data
-      params:
-        - name: IMAGE
-          value: $(params.image-url)
-        - name: DOCKERFILE
-          value: Dockerfile
-        - name: CONTEXT
-          value: .
+    - name: CONTEXT
+      type: string
+  workspaces:
+    - name: source
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /kaniko/.docker/config.json
+      command:
+        - /kaniko/executor
+      args:
+        - "--dockerfile=$(params.DOCKERFILE)"
+        - "--context=$(workspaces.source.path)/$(params.CONTEXT)"
+        - "--destination=$(params.IMAGE)"
+        - "--verbosity=info"
+        - "--skip-tls-verify"
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker/
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: dockerhub-secret
 
  
                                               
