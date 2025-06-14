@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: budget-app-pipeline
+spec:
+  workspaces:
+    - name: shared-data
+  params:
+    - name: repo-url
+      type: string
+    - name: image-url
+      type: string
+    - name: image-tag
+      type: string
+      default: "latest"
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: Task
+      workspaces:
+        - name: output
+          workspace: shared-data
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: deleteExisting
+          value: "true"
+
+    - name: kaniko-build
+      runAfter: [clone]
+      taskRef:
+        name: kaniko
+        kind: Task
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: IMAGE
+          value: $(params.image-url)
+        - name: DOCKERFILE
+          value: Dockerfile
+        - name: CONTEXT
+          value: /workspace/source
+                                              
