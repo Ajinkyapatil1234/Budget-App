@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dockerhub-serviceaccount
+  namespace: default
+secrets:
+  - name: dockerhub-secret
+imagePullSecrets:
+  - name: dockerhub-secret
+
+~                                                                                                                                                           ~                   
