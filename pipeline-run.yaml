@@ -5,6 +5,7 @@ metadata:
 spec:
   pipelineRef:
     name: budget-app-pipeline
+  serviceAccountName: dockerhub-serviceaccount
   workspaces:
     - name: shared-data
       persistentVolumeClaim:
@@ -14,6 +15,3 @@ spec:
       value: https://github.com/Ajinkyapatil1234/Budget-App.git
     - name: image-url
       value: docker.io/ajinkyadoc1234/budget-app:latest
-  taskRunSpecs:
-    - pipelineTaskName: kaniko-build
-      taskServiceAccountName: dockerhub-serviceaccount
