@@ -36,10 +36,8 @@ spec:
         - name: source
           workspace: shared-data
       params:
-        - name: IMAGE
-          value: $(params.image-url)
-        - name: DOCKERFILE
-          value: Dockerfile
-        - name: CONTEXT
-          value: /workspace/source
+         - name: DOCKERFILE
+           value: Dockerfile
+         - name: CONTEXT
+           value: .
                                               
