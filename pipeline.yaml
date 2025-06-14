@@ -10,14 +10,10 @@ spec:
       type: string
     - name: image-url
       type: string
-    - name: image-tag
-      type: string
-      default: "latest"
   tasks:
     - name: clone
       taskRef:
         name: git-clone
-        kind: Task
       workspaces:
         - name: output
           workspace: shared-data
@@ -26,17 +22,17 @@ spec:
           value: $(params.repo-url)
         - name: deleteExisting
           value: "true"
+
     - name: kaniko-build
       runAfter: [clone]
       taskRef:
         name: kaniko
-        kind: Task
       workspaces:
         - name: source
           workspace: shared-data
       params:
         - name: IMAGE
-          value: $(params.image-url):$(params.image-tag)
+          value: $(params.image-url)
         - name: DOCKERFILE
           value: Dockerfile
         - name: CONTEXT
