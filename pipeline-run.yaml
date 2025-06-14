@@ -10,12 +10,10 @@ spec:
       persistentVolumeClaim:
         claimName: tekton-workspace-pvc
   params:
-   - name: repo-url
-     value: https://github.com/Ajinkyapatil1234/Budget-App.git
-   - name: image-url
-     value: docker.io/ajinkyadoc1234/budget-app
-   - name: image-tag
-     value: latest
-taskRunSpecs:
+    - name: repo-url
+      value: https://github.com/Ajinkyapatil1234/Budget-App.git
+    - name: image-url
+      value: docker.io/ajinkyadoc1234/budget-app:latest
+  taskRunSpecs:
     - pipelineTaskName: kaniko-build
-      serviceAccountName: dockerhub-serviceaccount
+      taskServiceAccountName: dockerhub-serviceaccount
