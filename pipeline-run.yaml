@@ -2,10 +2,11 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: budget-app-run
+  annotations:
+    pipeline.tekton.dev/serviceAccountName: dockerhub-serviceaccount
 spec:
   pipelineRef:
     name: budget-app-pipeline
-  serviceAccountName: dockerhub-serviceaccount
   workspaces:
     - name: shared-data
       persistentVolumeClaim:
