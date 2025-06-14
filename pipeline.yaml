@@ -26,7 +26,6 @@ spec:
           value: $(params.repo-url)
         - name: deleteExisting
           value: "true"
-
     - name: kaniko-build
       runAfter: [clone]
       taskRef:
@@ -36,8 +35,12 @@ spec:
         - name: source
           workspace: shared-data
       params:
-         - name: DOCKERFILE
-           value: Dockerfile
-         - name: CONTEXT
-           value: .
+        - name: IMAGE
+          value: $(params.image-url):$(params.image-tag)
+        - name: DOCKERFILE
+          value: Dockerfile
+        - name: CONTEXT
+          value: .
+
+ 
                                               
