@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   name: budget-app-run
 spec:
+  serviceAccountName: dockerhub-serviceaccount  # <-- this is critical
   pipelineRef:
     name: budget-app-pipeline
   workspaces:
